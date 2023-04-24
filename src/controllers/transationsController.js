@@ -17,7 +17,7 @@ export async function postTransactions(req, res) {
       value: Joi.number().positive().required(),
       message: Joi.string().required(),
     });
-    const { error, value } = schema.validate(req.body, { abortEarly: tipo });
+    const { error, value } = schema.validate(req.body, { abortEarly: false });
     if (error) return res.status(422).send({ message: "Unprocessable Entity" });
   
     try {
@@ -29,12 +29,17 @@ export async function postTransactions(req, res) {
     }
   };
 export async function getTransactions (req, res){
-    const { Authorization } = req.header;
-    const token = Authorization?.replace("Bearer ", "");
+    const { authorization } = req.headers;
+    const token = authorization?.replace("Bearer ", "");
+    console.log("token",token)
     if (!token) return res.status(401).send({ message: "Unauthorized" });
   
     try {
-      const transactions = await db.collection("transactions").find().toArray();
+      const session = await db.collection("sessions").findOne({ token });
+      if (!session) return res.status(401).send({ message: "Unauthorized" });
+      const user = await db.collection("Users").findOne({ _id: session.userId });
+      if (!user) return res.status(404).send({ message: "Not Found" });
+      const transactions = await db.collection("transactions").find({userId: user._id}).toArray();
       if (transactions.length === 0)
         return res.status(422).send({ message: "No transactions registered" });
   

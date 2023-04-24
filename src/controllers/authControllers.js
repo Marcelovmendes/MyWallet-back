@@ -30,8 +30,8 @@ export async function postSignIn(req, res) {
       const { error, value } = schemaLogin.validate(req.body, {
         abortEarly: false,
       });
-      const { email, password } = value;
-      console.log(email, password);
+      const {email, password} = value;
+      console.log("email e senha" ,email, password);
       if (error) return res.status(422).send(error.details[0].message);
   
       const user = await db.collection("Users").findOne({ email });
@@ -40,8 +40,8 @@ export async function postSignIn(req, res) {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = uuid();
         await db.collection("sessions").insertOne({ userId: user._id, token });
-        console.log({ userId: user._id, token });
-        res.send(token);
+        console.log({user, token });
+        res.send({token,user});
       } else {
         res.status(401).send({ message: "Unauthorized" });
       }
