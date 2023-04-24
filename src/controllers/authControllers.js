@@ -35,7 +35,7 @@ export async function postSignIn(req, res) {
       if (error) return res.status(422).send(error.details[0].message);
   
       const user = await db.collection("Users").findOne({ email });
-      if (!user) return res.status(404).send({ message: "Not Found" });
+      if (!user) return res.status(404).send( "Not Found" );
   
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = uuid();
@@ -43,9 +43,21 @@ export async function postSignIn(req, res) {
         console.log({user, token });
         res.send({token,user});
       } else {
-        res.status(401).send({ message: "Unauthorized" });
+        res.status(401).send( "Unauthorized" );
       }
     } catch (err) {
-      res.status(500).send({ message: "Internal server error" });
+      res.status(500).send( "Internal server error" );
+    }
+  };
+  export async function postLogout(req, res) {
+    const { authorization } = req.headers;
+    console.log('autorization',authorization)
+    const token = authorization?.replace("Bearer ", "");
+    if (!token) return res.status(401).send( "Unauthorized" );
+    try {
+      await db.collection("sessions").deleteOne({ token });
+      res.send('Logout User success'); 
+    } catch (err) {
+      res.status(500).send( "Server Internal Error" );
     }
   };
