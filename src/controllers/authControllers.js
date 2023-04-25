@@ -12,7 +12,7 @@ export async function postSignUp (req, res) {
     if (error) return res.status(422).send(error.details[0].message);
     try {
       const userEmailExists = await db.collection("Users").findOne({ email });
-      if (userEmailExists) return res.status(409).send({ message: "Conflict" }); //"Este email já está cadastrado"
+      if (userEmailExists) return res.status(409).send({ message: "Conflict" }); 
   
       const hash = bcrypt.hashSync(password, 10);
   

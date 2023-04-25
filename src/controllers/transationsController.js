@@ -46,7 +46,7 @@ export async function getTransactions (req, res){
       const transactions = await db.collection("transactions").find({userId: session.userId}).toArray();
       console.log(transactions)
       if (transactions.length === 0)
-        return res.status(422).send("No transactions registered");
+        return res.sendStatus(422)
   
       res.send(transactions);
     } catch (err) {
