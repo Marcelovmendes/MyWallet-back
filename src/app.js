@@ -12,4 +12,4 @@ server.use(transictionRoutes)
 
 const PORT = 5000;
 
-server.listen(PORT, () => console.log("On Server"));
+server.listen(process.env.PORT, () => console.log("On Server"));
