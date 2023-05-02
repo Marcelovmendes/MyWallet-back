@@ -9,6 +9,6 @@ server.use(express.json());
 server.use(userRouter)
 server.use(transictionRoutes)
 
-const PORT = process.env.PORT
 
-server.listen(PORT, () => console.log("On Server"));
+
+server.listen(process.env.PORT, () => console.log("On Server"));
