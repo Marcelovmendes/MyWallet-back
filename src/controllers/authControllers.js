@@ -18,6 +18,7 @@ export async function postSignIn(req, res) {
   const { token, user } =  await authService.signIn(email, password);
     return res.send({ token});
   } catch (err) {
+    console.log(err.message);
     res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 }
