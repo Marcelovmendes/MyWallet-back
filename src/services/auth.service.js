@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import * as bcrypt from "bcrypt";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { usersRepository } from "../repository/users.repository.js";
 import { sessionRepository } from "../repository/sessions.repository.js";
 
