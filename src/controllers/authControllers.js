@@ -16,7 +16,7 @@ export async function postSignIn(req, res) {
     const { email, password } = req.body;
 
   const { token, user } =  await authService.signIn(email, password);
-    return res.send({ token, user });
+    return res.send({ token});
   } catch (err) {
     res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -27,6 +27,6 @@ export async function postLogout(res) {
     await authService.logout(token);
     res.send("Logout User success");
   } catch (err) {
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).send("Server Internal Error");
+    res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR)
   }
 }

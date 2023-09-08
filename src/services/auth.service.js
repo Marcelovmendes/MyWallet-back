@@ -20,7 +20,7 @@ const signIn = async (email, password) => {
 
   const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || "secret");
   await sessionRepository.createSession(user, token);
-  return { user, token };
+  return { token };
 };
 const logout = async (token) => {
   await sessionRepository.deleteSession(token);
