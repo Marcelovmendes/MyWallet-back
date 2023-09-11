@@ -10,8 +10,3 @@ try {
   console.log(err.message);
 }
 export const db = mongoClient.db();
-
-/*const mongoClient = new MongoClient('mongodb://localhost:27017/test');
-export let db;
-
-mongoClient.connect().then(() => (db = mongoClient.db())); */
