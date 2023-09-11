@@ -1,35 +1,24 @@
-import httpStatus from "http-status";
-import { sessionRepository } from "../repository/sessions.repository.js";
-import { usersRepository } from "../repository/users.repository.js";
-import { transactionsRepository } from "../repository/transactions.repository.js";
-
-const createTransactions = async (token, date, body, tipo) => {
-  const { session } = checkSession(token);
-  const userId = session.userId;
+import httpStatus from 'http-status';
+import { transactionsRepository } from '../repository/transactions.repository.js';
+import dayjs from 'dayjs';
+const createTransactions = async (tipo, body, userId) => {
+  const date = dayjs().format('DD/MM');
   const transactions = await transactionsRepository.createTransactions(
-    userId,
-    date,
+    tipo,
     body,
-    tipo
+    date,
+    userId,
   );
   return transactions;
 };
-const findManyTransactions = async (token) => {
-  const { session } = checkSession(token);
-  const transactions = await transactionsRepository.findManyTransactions(
-    session.userId
-  );
-  if (!transactions.lenght) throw new Error(httpStatus.UNPROCESSABLE_ENTITY);
+const findManyTransactions = async (userId) => {
+  const transactions =
+    await transactionsRepository.findManyTransactions(userId);
+  if (!transactions.length)
+    return new Error(httpStatus.UNPROCESSABLE_ENTITY, 'Transactions not found');
   return transactions;
 };
 
-const checkSession = async (token) => {
-  const session = await sessionRepository.findOneSession(token);
-  if (!session) throw new Error(httpStatus.UNAUTHORIZED);
-  const user = await usersRepository.findUserBySession(session.userId);
-  if (!user) throw new Error(httpStatus.NOT_FOUND);
-  return session;
-};
 export const trasactionsService = {
   createTransactions,
   findManyTransactions,

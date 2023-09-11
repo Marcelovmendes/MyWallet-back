@@ -1,14 +1,9 @@
-import express from "express";
-import cors from "cors";
-import userRouter from "./Routes/signRoutes.js"
-import transictionRoutes from "./Routes/transictionsRoutes.js"
+import express from 'express';
+import cors from 'cors';
+import userRouter from './Routes/signRoutes.js';
+import transictionRoutes from './Routes/transictionsRoutes.js';
+import { json } from 'stream/consumers';
 
-const server = express();
-server.use(cors());
-server.use(express.json());
-server.use(userRouter)
-server.use(transictionRoutes)
-
-
-//process.env.PORT
-server.listen(process.env.PORT, () => console.log("On Server"));
+const app = express();
+app.use(cors()).use(express.json()).use(userRouter).use(transictionRoutes);
+export default app;

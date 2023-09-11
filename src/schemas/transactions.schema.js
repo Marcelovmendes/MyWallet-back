@@ -1,5 +1,5 @@
-import Joi from "joi";
+import Joi from 'joi';
 export const transactionSchema = Joi.object({
-    value: Joi.number().positive().required(),
-    message: Joi.string().required(),
-  });
+  value: Joi.number().positive().required(),
+  message: Joi.string().required(),
+});
